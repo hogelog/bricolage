@@ -44,6 +44,19 @@ module Bricolage
   class ParameterError < JobError; end
 
   ##
+  # Job net aborted by any failure or error
+  class JobNetSessionAborted < ApplicationError
+    def initialize(jobnet, result)
+      super "jobnet #{jobnet.id} aborted: cause=#{result.job.ref}"
+      @jobnet = jobnet
+      @result = result
+    end
+
+    attr_reader :jobnet
+    attr_reader :result
+  end
+
+  ##
   # Bad code in bricolage core or job classes.
   # This exception should NOT be thrown in ANY user environment.
   class FatalError < Exception; end
